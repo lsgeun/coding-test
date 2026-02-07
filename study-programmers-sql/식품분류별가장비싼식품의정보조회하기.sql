@@ -1,0 +1,23 @@
+-- 코드를 입력하세요
+WITH
+    MOST_EXPENSIVE AS (
+        SELECT CATEGORY, MAX(PRICE) AS MAX_PRICE
+        FROM FOOD_PRODUCT
+        GROUP BY
+            CATEGORY
+    )
+
+-- 가정: 카테고리마다 가장 비싼 물건이 단 1개만 존재한다.
+SELECT FP.CATEGORY, FP.PRICE, FP.PRODUCT_NAME
+FROM
+    FOOD_PRODUCT AS FP
+    INNER JOIN MOST_EXPENSIVE AS ME ON FP.CATEGORY = ME.CATEGORY
+WHERE
+    FP.PRICE = ME.MAX_PRICE
+    AND (
+        FP.CATEGORY = '과자'
+        OR FP.CATEGORY = '국'
+        OR FP.CATEGORY = '김치'
+        OR FP.CATEGORY = '식용유'
+    )
+ORDER BY FP.PRICE DESC;

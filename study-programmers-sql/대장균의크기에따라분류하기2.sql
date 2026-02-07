@@ -1,0 +1,24 @@
+-- 코드를 작성해주세요
+WITH
+    ECOLI_DATA_PERCENT AS (
+        SELECT ID, PERCENT_RANK() OVER (
+                ORDER BY SIZE_OF_COLONY DESC
+            ) AS PERCENT
+        FROM ECOLI_DATA
+    )
+
+SELECT
+    ID,
+    CASE
+        WHEN 0.00 <= PERCENT
+        AND PERCENT <= 0.25 THEN 'CRITICAL'
+        WHEN 0.25 < PERCENT
+        AND PERCENT <= 0.50 THEN 'HIGH'
+        WHEN 0.50 < PERCENT
+        AND PERCENT <= 0.75 THEN 'MEDIUM'
+        WHEN 0.75 < PERCENT
+        AND PERCENT <= 1.00 THEN 'LOW'
+        ELSE NULL
+    END AS COLONY_NAME
+FROM ECOLI_DATA_PERCENT
+ORDER BY ID ASC;
